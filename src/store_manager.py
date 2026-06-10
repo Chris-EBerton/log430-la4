@@ -11,6 +11,7 @@ from orders.controllers.order_controller import create_order, remove_order, get_
 from orders.controllers.user_controller import create_user, remove_user, get_user
 from stocks.controllers.product_controller import create_product, remove_product, get_product
 from stocks.controllers.stock_controller import get_stock, set_stock, get_stock_overview
+from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST
  
 app = Flask(__name__)
 
@@ -107,6 +108,15 @@ def graphql_supplier():
 
 # TODO: endpoint /metrics Prometheus
 
+@app.route("/metrics")
+def metrics():
+    return generate_latest(), 200, {"Content-Type": CONTENT_TYPE_LATEST}
+
+counter_orders = Counter('orders', 'Total calls to /orders')
+@app.post('/orders')
+def post_orders():
+    counter_orders.inc()
+    
 # Start Flask app
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
