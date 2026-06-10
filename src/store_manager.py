@@ -118,11 +118,6 @@ def graphql_supplier():
 def metrics():
     return generate_latest(), 200, {"Content-Type": CONTENT_TYPE_LATEST}
 
-counter_orders = Counter('orders', 'Total calls to /orders')
-@app.post('/orders')
-def post_orders():
-    counter_orders.inc()
-    
 # Start Flask app
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

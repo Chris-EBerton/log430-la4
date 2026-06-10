@@ -7,14 +7,17 @@
 (Il est obligatoire d'ajouter du code, des captures d'écran ou des sorties de terminal pour illustrer chacune de vos réponses.)
 
 ##  Question 1 : Combien d'utilisateurs faut-il pour que le Store Manager commence à échouer dans votre environnement de test ? Pour répondre à cette question, comparez la ligne Failures et la ligne Users dans les graphiques. 
-Réponse
+![Locus statistics before failing](image.png)
 
+![Locus statistics post failing](image-1.png)
 
+Le Store Manager commence à échouer  entre le 129e et le 136e utilisateur: il n'y a pas d'erreurs avant 128 Utilisateurs, mais il y a déjà des erreurs à compter du 136e
 ## 2. Question 2 : Sur l'onglet Statistics, comparez la différence entre les requêtes et les échecs pour tous les endpoints. Combien d'entre eux échouent plus de 50 % du temps ?
-
+![Onglet Statistics Requests Fails Name](image-2.png)
 
 ## 3.  Question 3 : Affichez quelques exemples des messages d'erreur affichés dans l'onglet Failures. Ces messages indiquent une défaillance dans quelle(s) partie(s) du Store Manager ? Par exemple, est-ce que le problème vient du service Python / MySQL / Redis / autre ?
-Réponse
+
+![Onglet Failure messages](image-3.png)
 
 ## 4.  Question 4 : Sur l'onglet Statistics, comparez les résultats actuels avec les résultats du test de charge précédent. Est-ce que vous voyez quelques différences dans les métriques pour l'endpoint POST /orders ?
 Réponse
