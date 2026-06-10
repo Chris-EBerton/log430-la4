@@ -14,6 +14,9 @@ from stocks.controllers.stock_controller import get_stock, set_stock, get_stock_
 from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST
  
 app = Flask(__name__)
+counter_orders = Counter('orders', 'Total calls to /orders')
+counter_orders_highest_spenders = Counter('orders_reports_highest_spenders', 'Total calls to /orders/reports/highest-spenders')
+counter_orders_best_sellers = Counter('orders_reports_best_sellers', 'Total calls to /orders/reports/best-sellers')
 
 @app.get('/health-check')
 def health():
@@ -24,6 +27,7 @@ def health():
 @app.post('/orders')
 def post_orders():
     """Create a new order based on information on request body"""
+    counter_orders.inc()
     return create_order(request)
 
 @app.delete('/orders/<int:order_id>')
@@ -80,12 +84,14 @@ def get_stocks(product_id):
 @app.get('/orders/reports/highest-spenders')
 def get_orders_highest_spending_users():
     """Get list of highest speding users, ordered by total expenditure"""
+    counter_orders_highest_spenders.inc()
     rows = get_report_highest_spending_users()
     return jsonify(rows)
 
 @app.get('/orders/reports/best-sellers')
 def get_orders_report_best_selling_products():
     """Get list of best selling products, ordered by number of orders"""
+    counter_orders_best_sellers.inc()
     rows = get_report_best_selling_products()
     return jsonify(rows)
 
