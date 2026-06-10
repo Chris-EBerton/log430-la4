@@ -149,8 +149,10 @@ def get_best_selling_products_redis():
 
 def get_highest_spending_users():
     """Get report of highest spending users"""
-    return get_highest_spending_users_redis()
+    # T1 : remplacer appel redis par MySQL
+    return get_highest_spending_users_mysql()
 
 def get_best_selling_products():
     """Get report of best selling products"""
-    return get_best_selling_products_redis()
+    # T1 : remplacer appel redis par MySQL
+    return get_best_selling_products_mysql()
