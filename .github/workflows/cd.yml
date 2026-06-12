@@ -20,7 +20,7 @@ jobs:
           echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
           echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
           echo "DB_USER=${{ secrets.DB_USER }}" >> .env
-          echo "DB_PASS=${{ secrets.DB_PASS }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
           echo "REDIS_HOST=${{ secrets.REDIS_HOST }}" >> .env
           echo "REDIS_PORT=${{ secrets.REDIS_PORT }}" >> .env
           echo "REDIS_DB=${{ secrets.REDIS_DB }}" >> .env
@@ -28,10 +28,11 @@ jobs:
 
       - name: Restart app
         run: |
-          docker-compose \
-            -f docker-compose.yml \
-            down
+          docker-compose -f docker-compose.yml down
 
-          docker-compose \
-            -f docker-compose.yml \
-            up -d --build
+          docker-compose -f docker-compose.yml up -d --build
+
+      - name: Ensure network exists
+        run: |
+          docker network inspect labo04-network >/dev/null 2>&1 || \
+          docker network create labo04-network
