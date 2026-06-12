@@ -18,6 +18,14 @@ counter_orders = Counter('orders', 'Total calls to /orders')
 counter_orders_highest_spenders = Counter('orders_reports_highest_spenders', 'Total calls to /orders/reports/highest-spenders')
 counter_orders_best_sellers = Counter('orders_reports_best_sellers', 'Total calls to /orders/reports/best-sellers')
 
+# Auto-generate Redis reports after startup and refresh them every 60 seconds.
+def generate_reports_and_cache():
+    threading.Timer(2.0, get_report_highest_spending_users, args=(True,)).start()
+    threading.Timer(2.0, get_report_best_selling_products, args=(True,)).start()
+    threading.Timer(60.0, generate_reports_and_cache).start()
+
+generate_reports_and_cache()
+
 @app.get('/health-check')
 def health():
     """Return OK if app is up and running"""
