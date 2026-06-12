@@ -20,11 +20,22 @@ Le Store Manager commence à échouer  entre le 129e et le 136e utilisateur: il 
 ![Onglet Failure messages](image-3.png)
 
 ## 4.  Question 4 : Sur l'onglet Statistics, comparez les résultats actuels avec les résultats du test de charge précédent. Est-ce que vous voyez quelques différences dans les métriques pour l'endpoint POST /orders ?
-Réponse
+
+
+
+
+![Locust Statistics comparison avant-après](image-7.png)
+
+Il y a beaucoup plus de requêtes après l'optimisation de add_product. Aussi, le taux d'erreurs est vraisemblablement similaire. Donc, il n'y a globalement que des améliorations.
 
 ## 5.  Question 5 : Si nous avions plus d'articles dans notre base de données (par exemple, 1 million), ou simplement plus d'articles par commande en moyenne, le temps de réponse de l'endpoint POST /orders augmenterait-il, diminuerait-il ou resterait-il identique ?
-Rep
 
+![Locus statistics post failing](image-1.png)
+
+
+![Locust statistics Overall](image-4.png)
+
+Considérant qu'une telle augmentation signifie une augmentation des ressources demandées par commandes, la prédiction serait que le temps de réponse diminuera. 
 
 ## 6.  Question 6 : Sur l'onglet Statistics, comparez les résultats actuels avec les résultats du test de charge précédent. Est-ce que vous voyez quelques différences significatives dans les métriques pour les endpoints POST /orders, GET /orders/reports/highest-spenders et GET /orders/reports/best-sellers ? Dans quelle mesure la performance s'est-elle améliorée ou détériorée (par exemple, en pourcentage) ?
 
