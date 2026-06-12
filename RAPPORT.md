@@ -50,6 +50,8 @@ Test en local
 
 ![Statistics add_order vs all optimised file](image-8.png)
 
+
+
 ## 7.  Question 7 : La génération de rapports repose désormais entièrement sur des requêtes adressées à Redis, ce qui réduit la charge pesant sur MySQL. Cependant, le point de terminaison POST /orders reste à la traîne par rapport aux autres en termes de performances dans notre scénario de test. Alors, qu'est-ce qui limite les performances de l'endpoint POST /orders ?
 
 L'endpoint POST /orders ne dépend pas de Redis ou MySQL, donc il reste non-affecté par le changement.
