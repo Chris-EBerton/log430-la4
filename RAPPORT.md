@@ -9,21 +9,27 @@
 ##  Question 1 : Combien d'utilisateurs faut-il pour que le Store Manager commence à échouer dans votre environnement de test ? Pour répondre à cette question, comparez la ligne Failures et la ligne Users dans les graphiques.
  N.B : réponses lorsque local
 
-![Locus statistics before failing](image.png)
+![Locust statistics before failing](image.png)
 
-![Locus statistics post failing](image-1.png)
+![Locust statistics post failing](image-1.png)
 
 Le Store Manager commence à échouer  entre le 129e et le 136e utilisateur: il n'y a pas d'erreurs avant 128 Utilisateurs, mais il y a déjà des erreurs à compter du 136e
+
+
 ## 2. Question 2 : Sur l'onglet Statistics, comparez la différence entre les requêtes et les échecs pour tous les endpoints. Combien d'entre eux échouent plus de 50 % du temps ?
+
 ![Onglet Statistics Requests Fails Name](image-2.png)
+
+Toutes les catégories de requêtes, soit POST, GET, autant pour best-sellers que highest-spenders et agregated.
+
 
 ## 3.  Question 3 : Affichez quelques exemples des messages d'erreur affichés dans l'onglet Failures. Ces messages indiquent une défaillance dans quelle(s) partie(s) du Store Manager ? Par exemple, est-ce que le problème vient du service Python / MySQL / Redis / autre ?
 
 ![Onglet Failure messages](image-3.png)
 
+La source du problème est la capacité du store_manager. En effet, la plupart des erreurs sont des timeouts ou des rapports d'excès de connexions.
+
 ## 4.  Question 4 : Sur l'onglet Statistics, comparez les résultats actuels avec les résultats du test de charge précédent. Est-ce que vous voyez quelques différences dans les métriques pour l'endpoint POST /orders ?
-
-
 
 
 ![Locust Statistics comparison avant-après](image-7.png)
@@ -48,8 +54,11 @@ Test en local
 
 ![Chart post optimisation](image-6.png)
 
+N.B : résultats discutés traitent des tests locaux.
+
 ![Statistics add_order vs all optimised file](image-8.png)
 
+Dans toutes les catégories à l'exception de Post Orders, le taux d'échecs s'est amélioré de façon significative, soit moins de 0.1% pour POST, mais plus de 15% pour les GETs.
 
 
 ## 7.  Question 7 : La génération de rapports repose désormais entièrement sur des requêtes adressées à Redis, ce qui réduit la charge pesant sur MySQL. Cependant, le point de terminaison POST /orders reste à la traîne par rapport aux autres en termes de performances dans notre scénario de test. Alors, qu'est-ce qui limite les performances de l'endpoint POST /orders ?
@@ -58,17 +67,25 @@ L'endpoint POST /orders ne dépend pas de Redis ou MySQL, donc il reste non-affe
 
 ## 8. Question 8 : Sur l'onglet Statistics, comparez les résultats actuels avec les résultats du test de charge précédent. Est-ce que vous voyez quelques différences significatives dans les métriques pour les endpoints POST /orders, GET /orders/reports/highest-spenders et GET /orders/reports/best-sellers ? Dans quelle mesure la performance s'est-elle améliorée ou détériorée (par exemple, en pourcentage) ? La réponse dépendra de votre environnement d'exécution (par exemple, vous obtiendrez de meilleures performances en exécutant 2 instances de Store Manager sur 2 machines virtuelles plutôt que sur une seule).
 
-![Charts Final](image-9.png)
+![Accompagnement  Locus ](image-9.png)
 
 ![Statistics Final](image-10.png)
 
+Les performances se sont énormément détériorés lors de l'amélioration final. Avant, chaque amélioration amenaient une amélioration dans les ratios, mais dans ce scénarios, les performances ont chutés catégoriquement. Mieux vaudrait considérer ces données comme abérrantes ou comme indicateur que la configuration ne s'estn pas adaptée aux changements.
+
+
 ## 9.  Question 9 : Dans le fichier nginx.conf, il existe un attribut qui configure l'équilibrage de charge. Quelle politique d'équilibrage de charge utilisons-nous actuellement ? Consultez la documentation officielle de Nginx si vous avez des questions.
 
+![nginx.conf](image-12.png)
+
+La politique d'équilibrage de charge utilisé est le least_conn. Dans ce contexte, le balancement de charge redirige les requêtes vers les serveurs avec le moins de connections actives et les les plus légers au besoin.
 
 # Déploiement
 (Le cas échéant, décrivez votre pipeline CI/CD et ce que vous avez appris dans ce laboratoire en ce qui concerne le déploiement. Il est obligatoire d'ajouter du code, des captures d'écran ou des sorties de terminal pour illustrer votre réponse.)
 
+Ni le balancement de charges ni la transition de MySQL à Redis ne constituent une solution miracle à l'optimisation des performances :  le taux d'échecs, malgré améliorations, est demeuré très haut. De plus, les derniers résultats montrent un échec garanti suite à toutes les requêtes. Par contre, leurs effets sur les autres statistiques ou métriques observés sont non négligeables.
 
+Test sur self-hosted server : non concluant car indique manque de ressources pour héberger le serveur.
 Message erreur lors run sur VM
 '''
 [2026-06-12 20:05:39,383] 4cbb64cbf451/INFO/FlaskAPIUser: Calling highest_spenders
